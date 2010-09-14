@@ -10,24 +10,34 @@ describe Achievements do
       set_commits(1)
       @achievements = Achievements.new(@user)
       @achievements.for_commits
-      @user.badges[:commits].should match /BEGGINER/
+      @user.badges[:commits].include?("BEGGINER").should be_true
+    end
+
+    it "should recognize commiter as JOURNEYMAN" do
+      set_commits(26)
+      @achievements = Achievements.new(@user)
+      @user.badges[:commits] = ["BEGGINER"]
+      @achievements.for_commits
+      @user.badges[:commits].include?("JOURNEYMAN").should be_true
+    end
+
+    it "should recognize commiter as MASTER COMMITER" do
+      set_commits(100)
+      @achievements = Achievements.new(@user)
+      @user.badges[:commits] = ["BEGGINER", "JOURNEYMAN"]
+      @achievements.for_commits
+      @user.badges[:commits].include?("MASTER COMMITER").should be_true
     end
 
     it "should not recheck if user obtained MASTER COMMITER status" do
       set_commits(51)
-      @user.badges[:commits] = "MASTER COMMITER"
+      @user.badges[:commits] << "MASTER COMMITER"
       @achievements = Achievements.new(@user)
       @achievements.should_receive(:stats).exactly(0).times
       @achievements.for_commits
     end
 
-    it "should recognize commiter as JOURNEYMAN" do
-      set_commits(25)
-      @achievements = Achievements.new(@user)
-      @achievements.for_commits
-      @user.badges[:commits].should match /JOURNEYMAN/
-    end
-
+  
 
 
   end

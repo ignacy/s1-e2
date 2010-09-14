@@ -20,7 +20,7 @@
 # I assume that each User has a method for getting
 # achievements through Achievements object
 # which represents current status for each of the categories
-# and saves them into User.badges hash (which has the same keys)
+# and saves them into User.badges hash of arrays
 
 require 'stats'
 require 'user'
@@ -38,23 +38,26 @@ class Achievements
   end
 
   def for_commits
-    return if @user.badges[:commits] == "MASTER_COMMITER"
+    return if @user.badges[:commits].include? "MASTER_COMMITER"
     
     if @stats[:commits] == BEGGINER
-      @user.badges[:commits] = "BEGGINER"
+      @user.badges[:commits] << "BEGGINER"
       return
     end
 
-    if @stats[:commits] >= JOURNEYMAN && @stats[:commits] < MASTER_COMMITER
-      @user.badges[:commits] = "JOURNEYMAN"
-      return
+    if @user.badges[:commits].include?("BEGGINER")
+      if @stats[:commits] >= JOURNEYMAN && @stats[:commits] < MASTER_COMMITER
+        @user.badges[:commits] << "JOURNEYMAN"
+        return
+      end
     end
 
-    if @stats[:commits] >= MASTER_COMMITER
-      @user.badges[:commits] = "MASTER COMMITER"
-      return
+    if @user.badges[:commits].include?("BEGGINER") && @user.badges[:commits].include?("JOURNEYMAN")
+      if @stats[:commits] >= MASTER_COMMITER
+        @user.badges[:commits] << "MASTER COMMITER"
+        return
+      end
     end
-
 end
 
 
