@@ -88,6 +88,16 @@ describe Achievements do
       @achievements.for_watchers
       @user.badges[:watchers].should == ""
     end
+
+    it "should update the stars if rating changes" do
+      set_watchers(90)
+      @achievements = Achievements.new(@user)
+      @achievements.for_watchers
+      @user.badges[:watchers].should == "BRONZE STAR"
+      @achievements.stats[:watchers] = 3
+      @achievements.for_watchers
+      @user.badges[:watchers].should == "GOLD STAR"
+    end
   end
 end
 
