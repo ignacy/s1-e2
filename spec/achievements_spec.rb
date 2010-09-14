@@ -37,9 +37,6 @@ describe Achievements do
       @achievements.for_commits
     end
 
-  
-
-
   end
 end
 
