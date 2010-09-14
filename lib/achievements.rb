@@ -40,12 +40,12 @@ class Achievements
   def for_commits
     return if @user.badges[:commits].include? "MASTER_COMMITER"
     
-    if @stats[:commits] == BEGGINER
+    if @user.badges[:commits].empty? && @stats[:commits] == BEGGINER
       @user.badges[:commits] << "BEGGINER"
       return
     end
 
-    if @user.badges[:commits].include?("BEGGINER")
+    if @user.badges[:commits] == ["BEGGINER"]
       if @stats[:commits] >= JOURNEYMAN && @stats[:commits] < MASTER_COMMITER
         @user.badges[:commits] << "JOURNEYMAN"
         return
