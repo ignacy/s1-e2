@@ -26,14 +26,15 @@ require 'user'
 class Achievements
   attr_accessor :stats, :user
 
-  BEGGINER = 1
-  JOURNEYMAN = 20
-  MASTER_COMMITER = 50
-  
   def initialize(user)
     @user = user
     @stats = Stats.get_stats_for(user)
   end
+
+  # commits
+  BEGGINER = 1
+  JOURNEYMAN = 20
+  MASTER_COMMITER = 50
 
   def for_commits
     return if @user.badges[:commits].include? "MASTER_COMMITER"
@@ -56,7 +57,26 @@ class Achievements
         return
       end
     end
-end
+  end
+
+  # watchers
+  GOLD_STAR = 10
+  SILVER_STAR = 50
+  BRONZE_STAR = 100
+  
+  def for_watchers
+    @user.badges[:watchers] = case @stats[:watchers]
+                             when 1..GOLD_STAR
+                               "GOLD STAR"
+                             when (GOLD_STAR+1)..SILVER_STAR
+                               "SILVER STAR"
+                             when (SILVER_STAR+1)..BRONZE_STAR
+                                "BRONZE STAR"
+                              else
+                                ""
+                             end
+  end
+
 
 
   

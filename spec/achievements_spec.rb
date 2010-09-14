@@ -1,7 +1,7 @@
 require File.dirname(__FILE__) + "/../lib/achievements"
 
 describe Achievements do
-  context "commits badges" do
+  context "commits badges (STATIC BADGES)" do
     before(:each) do
       @user = User.new
     end
@@ -53,11 +53,49 @@ describe Achievements do
       @achievements.should_receive(:stats).exactly(0).times
       @achievements.for_commits
     end
+  end
 
+
+  context "watchers list (DYNAMIC BADGES)" do
+    before(:each) do
+      @user = User.new
+    end
+
+    it "should add a GOLD STAR if place in top 10" do
+      set_watchers(3)
+      @achievements = Achievements.new(@user)
+      @achievements.for_watchers
+      @user.badges[:watchers].should == "GOLD STAR"
+    end
+
+    it "should add a SILVER STAR if place in top 10" do
+      set_watchers(21)
+      @achievements = Achievements.new(@user)
+      @achievements.for_watchers
+      @user.badges[:watchers].should == "SILVER STAR"
+    end
+
+    it "should add a BRONZE STAR if place in top 10" do
+      set_watchers(90)
+      @achievements = Achievements.new(@user)
+      @achievements.for_watchers
+      @user.badges[:watchers].should == "BRONZE STAR"
+    end
+
+    it "should have no starts if position is > 100" do
+      set_watchers(3212)
+      @achievements = Achievements.new(@user)
+      @achievements.for_watchers
+      @user.badges[:watchers].should == ""
+    end
   end
 end
 
 def set_commits(x)
   Stats.stub(:get_stats_for).and_return({:commits => x})
+end
+
+def set_watchers(x)
+  Stats.stub(:get_stats_for).and_return({:watchers => x})
 end
 
