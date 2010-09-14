@@ -19,6 +19,8 @@ class CommitsState
 
   def next
     commits = @user.commits
+
+    # STM TODO: zeby sie dalo tylko do przodu
     
     return if @user.badges[:commits].include? "MASTER_COMMITER"
     

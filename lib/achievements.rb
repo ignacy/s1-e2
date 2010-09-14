@@ -38,11 +38,6 @@ class Achievements
     end
   end
 
-  # watchers
-  GOLD_STAR = 10
-  SILVER_STAR = 50
-  BRONZE_STAR = 100
-  
   def for_watchers
     if @user.badges[:watchers].empty? || (@stats[:watchers] != @user.watchers_place)
       @user.watchers_place = @stats[:watchers]
@@ -50,6 +45,11 @@ class Achievements
     end
   end
 
+  # watchers
+  GOLD_STAR = 10
+  SILVER_STAR = 50
+  BRONZE_STAR = 100
+  
   def get_badge_for_watchers
     @user.badges[:watchers] = case @stats[:watchers]
                               when 1..GOLD_STAR
