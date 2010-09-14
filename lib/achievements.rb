@@ -65,23 +65,22 @@ class Achievements
   BRONZE_STAR = 100
   
   def for_watchers
+    if @user.badges[:watchers].empty? || (@stats[:watchers] != @user.watchers_place)
+      @user.watchers_place = @stats[:watchers]
+      get_badge_for_watchers
+    end
+  end
+
+  def get_badge_for_watchers
     @user.badges[:watchers] = case @stats[:watchers]
-                             when 1..GOLD_STAR
-                               "GOLD STAR"
-                             when (GOLD_STAR+1)..SILVER_STAR
-                               "SILVER STAR"
-                             when (SILVER_STAR+1)..BRONZE_STAR
+                              when 1..GOLD_STAR
+                                "GOLD STAR"
+                              when (GOLD_STAR+1)..SILVER_STAR
+                                "SILVER STAR"
+                              when (SILVER_STAR+1)..BRONZE_STAR
                                 "BRONZE STAR"
                               else
                                 ""
-                             end
+                              end
   end
-
-
-
-  
-
-
-
-
 end
