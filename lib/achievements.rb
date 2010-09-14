@@ -31,31 +31,10 @@ class Achievements
     @stats = Stats.get_stats_for(user)
   end
 
-  # commits
-  BEGGINER = 1
-  JOURNEYMAN = 20
-  MASTER_COMMITER = 50
-
   def for_commits
-    return if @user.badges[:commits].include? "MASTER_COMMITER"
-    
-    if @user.badges[:commits].empty? && @stats[:commits] == BEGGINER
-      @user.badges[:commits] << "BEGGINER"
-      return
-    end
-
-    if @user.badges[:commits] == ["BEGGINER"]
-      if @stats[:commits] >= JOURNEYMAN && @stats[:commits] < MASTER_COMMITER
-        @user.badges[:commits] << "JOURNEYMAN"
-        return
-      end
-    end
-
-    if @user.badges[:commits].include?("BEGGINER") && @user.badges[:commits].include?("JOURNEYMAN")
-      if @stats[:commits] >= MASTER_COMMITER
-        @user.badges[:commits] << "MASTER COMMITER"
-        return
-      end
+    if @user.commits != @stats[:commits]
+      @user.commits = @stats[:commits]
+      @user.commits_state.next
     end
   end
 
