@@ -29,6 +29,15 @@ describe Achievements do
       @user.badges[:commits].include?("JOURNEYMAN").should be_true
     end
 
+    it "should not add JOURNEYMAN second time" do
+      set_commits(33)
+      @achievements = Achievements.new(@user)
+      @user.badges[:commits] = ["BEGGINER"]
+      @achievements.for_commits
+      @achievements.for_commits
+      @user.badges[:commits].should == ["BEGGINER", "JOURNEYMAN"]
+    end
+
     it "should recognize commiter as MASTER COMMITER" do
       set_commits(100)
       @achievements = Achievements.new(@user)
