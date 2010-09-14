@@ -6,7 +6,7 @@ describe Stats do
       user = mock("User")
       stats = Stats.get_stats_for(user)
       stats.should be_a_kind_of(Hash)
-      [:commits, :forks, :tags, :watchers, :place_on_watchers_rating, :users_that_forked].each do |stat|
+      [:commits, :forks, :watchers, :users_that_forked].each do |stat|
         stats[stat].should_not be_nil
       end
       
