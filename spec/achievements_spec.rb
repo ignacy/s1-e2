@@ -6,25 +6,25 @@ describe Achievements do
       @user = User.new
     end
 
-    it "should add a BEGGINER badge" do
+    it "should add a BEGINNER badge" do
       set_commits(1)
       @achievements = Achievements.new(@user)
       @achievements.for_commits
-      @user.badges[:commits].include?("BEGGINER").should be_true
+      @user.badges[:commits].include?("BEGINNER").should be_true
     end
     
-    it "should not add a BEGGINER badge second time" do
+    it "should not add a BEGINNER badge second time" do
       set_commits(1)
       @achievements = Achievements.new(@user)
       @achievements.for_commits
       @achievements.for_commits
-      @user.badges[:commits].should == ["BEGGINER"]
+      @user.badges[:commits].should == ["BEGINNER"]
     end
 
     it "should recognize commiter as JOURNEYMAN" do
       set_commits(26)
       @achievements = Achievements.new(@user)
-      @user.badges[:commits] = ["BEGGINER"]
+      @user.badges[:commits] = ["BEGINNER"]
       @achievements.for_commits
       @user.badges[:commits].include?("JOURNEYMAN").should be_true
     end
@@ -32,16 +32,16 @@ describe Achievements do
     it "should not add JOURNEYMAN second time" do
       set_commits(33)
       @achievements = Achievements.new(@user)
-      @user.badges[:commits] = ["BEGGINER"]
+      @user.badges[:commits] = ["BEGINNER"]
       @achievements.for_commits
       @achievements.for_commits
-      @user.badges[:commits].should == ["BEGGINER", "JOURNEYMAN"]
+      @user.badges[:commits].should == ["BEGINNER", "JOURNEYMAN"]
     end
 
     it "should recognize commiter as MASTER COMMITER" do
       set_commits(100)
       @achievements = Achievements.new(@user)
-      @user.badges[:commits] = ["BEGGINER", "JOURNEYMAN"]
+      @user.badges[:commits] = ["BEGINNER", "JOURNEYMAN"]
       @achievements.for_commits
       @user.badges[:commits].include?("MASTER COMMITER").should be_true
     end
